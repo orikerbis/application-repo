@@ -17,10 +17,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
           
-      - name: Configure AWS Credentials for China region audience
+      - name: Configure AWS Credentials 
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          audience: sts.amazonaws.com
           aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
 
