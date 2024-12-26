@@ -38,11 +38,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Login to ECR
-        id: ecr
-        uses: jwalton/gh-ecr-login@v3
-        with:
-          region: ${{ secrets.AWS_REGION }}
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+       
 
       - name: Build and push frontend image
         run: |
