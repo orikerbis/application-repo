@@ -4,8 +4,19 @@ on:
     workflow_dispatch:
     push:
         branches:
-            - main
+            - develop
 jobs:
+    assume-role:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Assume IAM Role
+              id: assume-role
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                  role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+                  aws-region: ${{ secrets.AWS_REGION }}
+                  role-session-name: GitHubActions
     build-frontend:
         runs-on: ubuntu-latest
 
@@ -55,17 +66,7 @@ jobs:
               run: |
                     docker buildx build --platform linux/amd64 --push -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_BACKEND }}:${{ env.IMAGE_TAG }} -f ./server/Dockerfile ./server
 
-    assume-role:
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Assume IAM Role
-              id: assume-role
-              uses: aws-actions/configure-aws-credentials@v1
-              with:
-                  role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-                  aws-region: ${{ secrets.AWS_REGION }}
-                  role-session-name: GitHubActions
+    
 
     #   - name: Clone GitOps repository
     #     run: |
