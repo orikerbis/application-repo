@@ -11,23 +11,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Assume IAM Role
-        id: assume-role
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Checkout
+        uses: actions/checkout@v4
+          
+      - name: Configure AWS Credentials
+        uses: fuller-inc/actions-aws-assume-role@v1
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
-          role-session-name: GitHubActions
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
 
   build-frontend:
     runs-on: ubuntu-latest
 
     env:
       ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-      ECR_REPOSITORY_FRONTEND: frontend
+      ECR_REPOSITORY_FRONTEND: ${{ secrets.ECR_REPOSITORY_FRONTEND }}
       IMAGE_TAG: ${{ github.sha }}
 
     steps:
@@ -52,7 +50,7 @@ jobs:
 
     env:
       ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-      ECR_REPOSITORY_BACKEND: backend
+      ECR_REPOSITORY_BACKEND: ${{ secrets.ECR_REPOSITORY_BACKEND }}
       IMAGE_TAG: ${{ github.sha }}
 
     steps:
