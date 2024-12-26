@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+      ECR_REPOSITORY_FRONTEND: frontend
+      ECR_REPOSITORY_BACKEND: backend
+      IMAGE_TAG: ${{ github.sha }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push frontend image
+        run: |
+          docker buildx build --platform linux/amd64 --push -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_FRONTEND }}:${{ env.IMAGE_TAG }} -f ./client/Dockerfile ./client
+
+      - name: Build and push backend image
+        run: |
+          docker buildx build --platform linux/amd64 --push -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_BACKEND }}:${{ env.IMAGE_TAG }} -f ./server/Dockerfile ./server
+
+      - name: Assume IAM Role
+        id: assume-role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHubActions
+
+      - name: Clone GitOps repository
+        run: |
+          git clone https://github.com/your-org/your-gitops-repo.git
+          cd your-gitops-repo
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Update image tags in GitOps repo
+        run: |
+          cd your-gitops-repo
+          sed -i 's|image: .*/frontend:.*|image: '"${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_FRONTEND }}:${{ env.IMAGE_TAG }}"'|g' path/to/your/frontend/deployment.yaml
+          sed -i 's|image: .*/backend:.*|image: '"${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_BACKEND }}:${{ env.IMAGE_TAG }}"'|g' path/to/your/backend/deployment.yaml
+
+      - name: Commit and push changes
+        run: |
+          cd your-gitops-repo
+          git add .
+          git commit -m "Update image tags to ${{ env.IMAGE_TAG }}"
+          git push
