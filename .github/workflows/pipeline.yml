@@ -25,6 +25,7 @@ jobs:
 
   build-frontend:
     runs-on: ubuntu-latest
+    needs: assume-role
 
     env:
       ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
@@ -50,6 +51,7 @@ jobs:
 
   build-backend:
     runs-on: ubuntu-latest
+    needs: assume-role
 
     env:
       ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
@@ -82,12 +84,12 @@ jobs:
     #   - name: Update image tags in GitOps repo
     #     run: |
     #       cd your-gitops-repo
-    #       sed -i 's|image: .*/frontend:.*|image: '"${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_FRONTEND }}:${{ env.IMAGE_TAG }}"'|g' path/to/your/frontend/deployment.yaml
-    #       sed -i 's|image: .*/backend:.*|image: '"${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_BACKEND }}:${{ env.IMAGE_TAG }}"'|g' path/to/your/backend/deployment.yaml
+    #       sed -i 's|image: .*/frontend:.*|image: '"{{ env.ECR_REGISTRY }}/{{ env.ECR_REPOSITORY_FRONTEND }}:${{ env.IMAGE_TAG }}"'|g' path/to/your/frontend/deployment.yaml
+    #       sed -i 's|image: .*/backend:.*|image: '"{{ env.ECR_REGISTRY }}/{{ env.ECR_REPOSITORY_BACKEND }}:${{ env.IMAGE_TAG }}"'|g' path/to/your/backend/deployment.yaml
 
     #   - name: Commit and push changes
     #     run: |
     #       cd your-gitops-repo
     #       git add .
-    #       git commit -m "Update image tags to ${{ env.IMAGE_TAG }}"
+    #       git commit -m "Update image tags to {{ env.IMAGE_TAG }}"
     #       git push
