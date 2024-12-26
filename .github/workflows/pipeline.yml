@@ -1,71 +1,74 @@
 name: CI/CD Pipeline
 
 on:
-    workflow_dispatch:
-    push:
-        branches:
-            - develop
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+
 jobs:
-    assume-role:
-        runs-on: ubuntu-latest
+  assume-role:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Assume IAM Role
-              id: assume-role
-              uses: aws-actions/configure-aws-credentials@v1
-              with:
-                  role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-                  aws-region: ${{ secrets.AWS_REGION }}
-                  role-session-name: GitHubActions
-    build-frontend:
-        runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-        env:
-            ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-            ECR_REPOSITORY_FRONTEND: frontend
-            IMAGE_TAG: ${{ github.sha }}
-        
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+      - name: Assume IAM Role
+        id: assume-role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHubActions
 
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v1
+  build-frontend:
+    runs-on: ubuntu-latest
 
-            - name: Login to ECR
-              id: ecr
-              uses: jwalton/gh-ecr-login@v3
-              with:
-                region: ${{ secrets.AWS_REGION }}
+    env:
+      ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+      ECR_REPOSITORY_FRONTEND: frontend
+      IMAGE_TAG: ${{ github.sha }}
 
-            - name: Build and push frontend image
-              run: |
-                  docker buildx build --platform linux/amd64 --push -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_FRONTEND }}:${{ env.IMAGE_TAG }} -f ./client/Dockerfile ./client
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    build-backend:
-        runs-on: ubuntu-latest
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-        env:
-            ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-            ECR_REPOSITORY_BACKEND: backend
-            IMAGE_TAG: ${{ github.sha }}
-        
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+      - name: Login to ECR
+        id: ecr
+        uses: jwalton/gh-ecr-login@v3
+        with:
+          region: ${{ secrets.AWS_REGION }}
 
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v1
+      - name: Build and push frontend image
+        run: |
+          docker buildx build --platform linux/amd64 --push -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_FRONTEND }}:${{ env.IMAGE_TAG }} -f ./client/Dockerfile ./client
 
-            - name: Log in to Amazon ECR
-              id: ecr-login
-              uses: aws-actions/amazon-ecr-login@v1
-              
+  build-backend:
+    runs-on: ubuntu-latest
 
-            - name: Build and push backend image
-              run: |
-                    docker buildx build --platform linux/amd64 --push -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_BACKEND }}:${{ env.IMAGE_TAG }} -f ./server/Dockerfile ./server
+    env:
+      ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+      ECR_REPOSITORY_BACKEND: backend
+      IMAGE_TAG: ${{ github.sha }}
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push backend image
+        run: |
+          docker buildx build --platform linux/amd64 --push -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_BACKEND }}:${{ env.IMAGE_TAG }} -f ./server/Dockerfile ./server
     
 
     #   - name: Clone GitOps repository
