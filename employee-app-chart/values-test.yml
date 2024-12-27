@@ -1,0 +1,13 @@
+client:
+  image:
+    tag: "latest"
+
+server:
+  image:
+    tag: "latest"
+  env:
+    MYSQL_HOST: secret
+    MYSQL_PORT: 3306
+    MYSQL_USER: secret
+    MYSQL_PASSWORD: secret
+    MYSQL_DATABASE: secret
