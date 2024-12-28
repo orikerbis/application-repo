@@ -8,11 +8,11 @@ app.use(cors({
 }));
 
 const db = mysql.createPool({
-  port: 3306,
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "employeeSystem",
+  port: "MYSQL_PORT",
+  host: "MYSQL_HOST",
+  user: "MYSQL_USER",
+  password: "MYSQL_PASSWORD",
+  database: "employeeSystemDB",
 });
 
 app.use(express.json());

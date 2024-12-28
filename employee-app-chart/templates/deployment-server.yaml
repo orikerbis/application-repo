@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "your-chart.fullname" . }}-server
+  labels:
+    app: {{ include "your-chart.name" . }}-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "your-chart.name" . }}-server
+  template:
+    metadata:
+      labels:
+        app: {{ include "your-chart.name" . }}-server
+    spec:
+      containers:
+        - name: server
+          image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.server.service.port }}
+          env:
+            - name: MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.server.env.MYSQL_HOST.valueFrom.secretKeyRef.name }}
+                  key: {{ .Values.server.env.MYSQL_HOST.valueFrom.secretKeyRef.key }}
+            - name: MYSQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.server.env.MYSQL_PORT.valueFrom.secretKeyRef.name }}
+                  key: {{ .Values.server.env.MYSQL_PORT.valueFrom.secretKeyRef.key }}
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.server.env.MYSQL_USER.valueFrom.secretKeyRef.name }}
+                  key: {{ .Values.server.env.MYSQL_USER.valueFrom.secretKeyRef.key }}
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.server.env.MYSQL_PASSWORD.valueFrom.secretKeyRef.name }}
+                  key: {{ .Values.server.env.MYSQL_PASSWORD.valueFrom.secretKeyRef.key }}
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.server.env.MYSQL_DATABASE.valueFrom.secretKeyRef.name }}
+                  key: {{ .Values.server.env.MYSQL_DATABASE.valueFrom.secretKeyRef.key }}
+       
