@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "employee-app.fullname" . }}-server
+  labels:
+    {{- include "employee-app.labels" . | nindent 4 }}
+  namespace: employee-system
+spec:
+  replicas: {{ .Values.server.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "employee-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "employee-app.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-server
+          image: "825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/backend:5c160fad446204314c2dd2d21a5a167dc952e2fe"
+          imagePullPolicy: {{ .Values.server.image.pullPolicy }}
+          envFrom:
+          - secretRef:
+              name: employee-system-db
+          ports:
+            - name: http
+              containerPort: {{ .Values.server.service.port }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: {{ .Values.server.service.port }}
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: {{ .Values.server.service.port }}
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10

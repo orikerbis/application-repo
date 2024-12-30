@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "employee-app.fullname" . }}-client
+  labels:
+    {{- include "employee-app.labels" . | nindent 4 }}
+  namespace: employee-system
+spec:
+  replicas: {{ .Values.client.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "employee-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "employee-app.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-client
+          image: "825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/frontend:5c160fad446204314c2dd2d21a5a167dc952e2fe"
+          imagePullPolicy: {{ .Values.client.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.client.service.port }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: {{ .Values.client.service.port }}
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: {{ .Values.client.service.port }}
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10

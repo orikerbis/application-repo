@@ -1,0 +1,23 @@
+global:
+  imagePullPolicy: IfNotPresent
+  namespace: employee-app
+
+client:
+  image:
+    repository: 825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/frontend
+    tag: ""
+  service:
+    name: employee-app-frontend
+    type: ClusterIP
+    port: 80
+  replicaCount: 1
+
+server:
+  image:
+    repository: 825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/backend
+    tag: ""
+  service:
+    name: employee-app-backend
+    type: ClusterIP
+    port: 3001
+  replicaCount: 1

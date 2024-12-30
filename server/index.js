@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const cors = require("cors");
 
 app.use(cors({
@@ -8,7 +8,7 @@ app.use(cors({
 }));
 
 const db = mysql.createPool({
-  port: "MYSQL_PORT",
+  port: 3306,
   host: "MYSQL_HOST",
   user: "MYSQL_USER",
   password: "MYSQL_PASSWORD",
