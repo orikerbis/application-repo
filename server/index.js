@@ -5,7 +5,7 @@ const mysql = require("mysql2");
 // Example CORS setup in Express
 const cors = require('cors');
 
-const allowedOrigins = ['https://app.yourdomain.com', 'http://localhost:3000'];
+const allowedOrigins = ['https://app.kerbis.online', 'http://localhost:3000'];
 
 app.use(cors({
   origin: function (origin, callback) {
