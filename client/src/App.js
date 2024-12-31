@@ -12,7 +12,7 @@ function App() {
   const [newWage, setNewWage] = useState(0);
 
   const [employeeList, setEmployeeList] = useState([]);
-  const backendUrl = "https://api.kerbis.online/api";
+  const backendUrl = "https://api.kerbis.online";
 
   const addEmployee = () => {
     Axios.post(`${backendUrl}/create`, {

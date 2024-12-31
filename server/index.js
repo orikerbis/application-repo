@@ -20,6 +20,7 @@ app.use(cors({
   },
   credentials: true, // If you need to send cookies or authentication headers
 }));
+app.options("*", cors()); // Allow preflight for all routes
 
 const db = mysql.createPool({
   port: 3306,
