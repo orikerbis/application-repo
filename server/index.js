@@ -2,25 +2,18 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql2");
 
-// Example CORS setup in Express
-const cors = require('cors');
-
-const allowedOrigins = ['https://app.kerbis.online', 'http://localhost:3000'];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-  },
-  credentials: true, // If you need to send cookies or authentication headers
-}));
-app.options("*", cors()); // Allow preflight for all routes
+app.use((req, res, next) => {
+  res
+      .header('Access-Control-Allow-Origin',
+          '*');
+  res
+      .header('Access-Control-Allow-Methods',
+          'GET, POST, PUT, DELETE');
+  res
+      .header('Access-Control-Allow-Headers',
+          'Origin, X-Requested-With,Content-Type, Accept');
+  next();
+});
 
 const db = mysql.createPool({
   port: 3306,
