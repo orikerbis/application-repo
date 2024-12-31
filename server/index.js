@@ -17,14 +17,14 @@ const db = mysql.createPool({
 
 app.use(express.json());
 
- db.connect(function(err) {
-   if (err) {
-     console.error('⚠️  Error Connecting: ' + err.stack);
-     return;
-   }
+//  db.connect(function(err) {
+//    if (err) {
+//      console.error('⚠️  Error Connecting: ' + err.stack);
+//      return;
+//    }
  
-   console.log('✅  Connected as ID: ' + connection.threadId);
- });
+//    console.log('✅  Connected as ID: ' + connection.threadId);
+//  });
 
 app.post("/create", (req, res) => {
   const name = req.body.name;
