@@ -3,8 +3,6 @@ kind: Ingress
 metadata:
   name: employee-system-ingress-backend
   namespace: employee-system
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
