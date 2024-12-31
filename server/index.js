@@ -11,9 +11,9 @@ app.use(express.json());
 
 const db = mysql.createPool({
   port: 3306,
-  host: "MYSQL_HOST", // Use environment variables
-  user: "MYSQL_USER",
-  password: "MYSQL_PASSWORD",
+  host: process.env.MYSQL_HOST, // Use environment variables
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
   database: "employee-db",
 });
 
