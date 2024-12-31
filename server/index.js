@@ -1,19 +1,7 @@
 const express = require("express");
 const app = express();
 const mysql = require("mysql2");
-
-app.use((req, res, next) => {
-  res
-      .header('Access-Control-Allow-Origin',
-          '*');
-  res
-      .header('Access-Control-Allow-Methods',
-          'GET, POST, PUT, DELETE');
-  res
-      .header('Access-Control-Allow-Headers',
-          'Origin, X-Requested-With,Content-Type, Accept');
-  next();
-});
+const cors = require("cors");
 
 const db = mysql.createPool({
   port: 3306,
@@ -40,6 +28,7 @@ app.post("/create", (req, res) => {
   const country = req.body.country;
   const position = req.body.position;
   const wage = req.body.wage;
+  res.set('Access-Control-Allow-Origin', '*');
 
   db.query(
     "INSERT INTO employees (name, age, country, position, wage) VALUES (?,?,?,?,?)",
@@ -62,6 +51,7 @@ app.get("/employees", (req, res) => {
       res.send(result);
     }
   });
+  res.set('Access-Control-Allow-Origin', '*');
 });
 
 app.put("/update", (req, res) => {
@@ -78,6 +68,7 @@ app.put("/update", (req, res) => {
       }
     }
   );
+  res.set('Access-Control-Allow-Origin', '*');
 });
 
 app.delete("/delete/:id", (req, res) => {
@@ -89,6 +80,7 @@ app.delete("/delete/:id", (req, res) => {
       res.send(result);
     }
   });
+  res.set('Access-Control-Allow-Origin', '*');
 });
 
 app.listen(3001, () => {
