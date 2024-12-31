@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}-server
-          image: "825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/backend:95651b525d50a15442947995d6bf71a5dd61d377"
+          image: "825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/backend:76c242ca5e9e212a0f4c2c97141b4e2e0260c4e3"
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
           envFrom:
           - secretRef:
