@@ -14,7 +14,7 @@ function App() {
   const [employeeList, setEmployeeList] = useState([]);
 
   const addEmployee = () => {
-    Axios.post("api.kerbis.online/create", {
+    Axios.post("/create", {
       name: name,
       age: age,
       country: country,
@@ -35,25 +35,25 @@ function App() {
   };
 
   const getEmployees = () => {
-    Axios.get("api.kerbis.online/employees").then((response) => {
+    Axios.get("/employees").then((response) => {
       setEmployeeList(response.data);
     });
   };
 
   const updateEmployeeWage = (id) => {
-    Axios.put("api.kerbis.online/update", { wage: newWage, id: id }).then(
+    Axios.put("/update", { wage: newWage, id: id }).then(
       (response) => {
         setEmployeeList(
           employeeList.map((val) => {
             return val.id == id
               ? {
-                  id: val.id,
-                  name: val.name,
-                  country: val.country,
-                  age: val.age,
-                  position: val.position,
-                  wage: newWage,
-                }
+                id: val.id,
+                name: val.name,
+                country: val.country,
+                age: val.age,
+                position: val.position,
+                wage: newWage,
+              }
               : val;
           })
         );
@@ -62,7 +62,7 @@ function App() {
   };
 
   const deleteEmployee = (id) => {
-    Axios.delete(`api.kerbis.online:3001/delete/${id}`).then((response) => {
+    Axios.delete(`/delete/${id}`).then((response) => {
       setEmployeeList(
         employeeList.filter((val) => {
           return val.id != id;

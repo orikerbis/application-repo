@@ -4,7 +4,7 @@ const mysql = require("mysql2");
 const cors = require("cors");
 
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: 'https://app.kerbis.online'
 }));
 
 const db = mysql.createPool({
@@ -12,19 +12,19 @@ const db = mysql.createPool({
   host: "MYSQL_HOST",
   user: "MYSQL_USER",
   password: "MYSQL_PASSWORD",
-  database: "employeeSystemDB",
+  database: "employee-db",
 });
 
 app.use(express.json());
 
-// db.connect(function(err) {
-//   if (err) {
-//     console.error('⚠️  Error Connecting: ' + err.stack);
-//     return;
-//   }
+ db.connect(function(err) {
+   if (err) {
+     console.error('⚠️  Error Connecting: ' + err.stack);
+     return;
+   }
  
-//   console.log('✅  Connected as ID: ' + connection.threadId);
-// });
+   console.log('✅  Connected as ID: ' + connection.threadId);
+ });
 
 app.post("/create", (req, res) => {
   const name = req.body.name;
