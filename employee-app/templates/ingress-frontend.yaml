@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: employee-system-ingress-frontend
+  name: employee-system-ingress
   namespace: employee-system
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -18,3 +18,4 @@ spec:
             name: {{ .Values.client.service.name }}
             port:
               number: {{ .Values.client.service.port }}
+  
