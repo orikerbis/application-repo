@@ -13,7 +13,7 @@ RUN npm install
 COPY . .
 
 # Expose the backend port (e.g., 5000)
-EXPOSE 5001
+EXPOSE 3001
 
 # Start the backend when the container launches
 CMD ["node", "index.js"]

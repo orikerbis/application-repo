@@ -12,9 +12,10 @@ function App() {
   const [newWage, setNewWage] = useState(0);
 
   const [employeeList, setEmployeeList] = useState([]);
+  const backendUrl = "http://api.kerbis.online";
 
   const addEmployee = () => {
-    Axios.post("/create", {
+    Axios.post(`${backendUrl}/create`, {
       name: name,
       age: age,
       country: country,
@@ -35,13 +36,13 @@ function App() {
   };
 
   const getEmployees = () => {
-    Axios.get("/employees").then((response) => {
+    Axios.get(`${backendUrl}/employees`).then((response) => {
       setEmployeeList(response.data);
     });
   };
 
   const updateEmployeeWage = (id) => {
-    Axios.put("/update", { wage: newWage, id: id }).then(
+    Axios.put(`${backendUrl}/update`, { wage: newWage, id: id }).then(
       (response) => {
         setEmployeeList(
           employeeList.map((val) => {
@@ -62,7 +63,7 @@ function App() {
   };
 
   const deleteEmployee = (id) => {
-    Axios.delete(`/delete/${id}`).then((response) => {
+    Axios.delete(`${backendUrl}/delete/${id}`).then((response) => {
       setEmployeeList(
         employeeList.filter((val) => {
           return val.id != id;

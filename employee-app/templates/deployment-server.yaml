@@ -17,13 +17,12 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}-server
-          image: "825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/backend:9016794faee39471fab11dac6835f887b8370013"
+          image: "825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/backend:794b451b06df6a6a302b446d901206fa6b337820"
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
           envFrom:
           - secretRef:
               name: employee-system-db
           ports:
-            - name: http
               containerPort: {{ .Values.server.service.port }}
               protocol: TCP
           # livenessProbe:
