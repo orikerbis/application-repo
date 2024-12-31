@@ -12,7 +12,7 @@ function App() {
   const [newWage, setNewWage] = useState(0);
 
   const [employeeList, setEmployeeList] = useState([]);
-  const backendUrl = "http://employee-app-backend:3001";
+  const backendUrl = "/api";
 
   const addEmployee = () => {
     Axios.post(`${backendUrl}/create`, {

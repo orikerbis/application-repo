@@ -5,17 +5,26 @@ metadata:
   namespace: employee-system
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:
   - host: app.kerbis.online
     http:
       paths:
-      - path: "/"
+      # API routes
+      - path: "/api(/|$)(.*)"
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: {{ .Values.server.service.name }}
+            port:
+              number: {{ .Values.server.service.port }}
+      # Static assets and frontend routes
+      - path: "/(.*)"
         pathType: ImplementationSpecific
         backend:
           service:
             name: {{ .Values.client.service.name }}
             port:
               number: {{ .Values.client.service.port }}
-  

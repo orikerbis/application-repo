@@ -3,84 +3,86 @@ const app = express();
 const mysql = require("mysql2");
 const cors = require("cors");
 
+// Enable CORS for all origins (adjust as needed for production)
+app.use(cors());
+
+// Parse JSON bodies
+app.use(express.json());
+
 const db = mysql.createPool({
   port: 3306,
-  host: "MYSQL_HOST",
-  user: "MYSQL_USER",
-  password: "MYSQL_PASSWORD",
+  host: MYSQL_HOST, // Use environment variables
+  user: MYSQL_USER,
+  password: MYSQL_PASSWORD,
   database: "employee-db",
 });
 
-app.use(express.json());
+// Optional: Test Database Connection
+// db.getConnection((err, connection) => {
+//   if (err) {
+//     console.error('⚠️  Error Connecting: ' + err.stack);
+//     return;
+//   }
+//   console.log('✅  Connected as ID: ' + connection.threadId);
+//   connection.release();
+// });
 
-//  db.connect(function(err) {
-//    if (err) {
-//      console.error('⚠️  Error Connecting: ' + err.stack);
-//      return;
-//    }
- 
-//    console.log('✅  Connected as ID: ' + connection.threadId);
-//  });
-
-app.post("/create", (req, res) => {
-  const name = req.body.name;
-  const age = req.body.age;
-  const country = req.body.country;
-  const position = req.body.position;
-  const wage = req.body.wage;
-  res.set('Access-Control-Allow-Origin', '*');
+app.post("/api/create", (req, res) => { // Prefixed with /api
+  const { name, age, country, position, wage } = req.body;
 
   db.query(
     "INSERT INTO employees (name, age, country, position, wage) VALUES (?,?,?,?,?)",
     [name, age, country, position, wage],
     (err, result) => {
       if (err) {
-        console.log(err);
+        console.error("Error inserting employee:", err);
+        res.status(500).send("Error inserting employee");
       } else {
-        res.send("Values Inserted");
+        res.status(201).send("Employee Added Successfully");
       }
     }
   );
 });
 
-app.get("/employees", (req, res) => {
+app.get("/api/employees", (req, res) => { // Prefixed with /api
   db.query("SELECT * FROM employees", (err, result) => {
     if (err) {
-      console.log(err);
+      console.error("Error fetching employees:", err);
+      res.status(500).send("Error fetching employees");
     } else {
-      res.send(result);
+      res.status(200).json(result);
     }
   });
-  res.set('Access-Control-Allow-Origin', '*');
 });
 
-app.put("/update", (req, res) => {
-  const id = req.body.id;
-  const wage = req.body.wage;
+app.put("/api/update", (req, res) => { // Prefixed with /api
+  const { id, wage } = req.body;
+
   db.query(
     "UPDATE employees SET wage = ? WHERE id = ?",
     [wage, id],
     (err, result) => {
       if (err) {
-        console.log(err);
+        console.error("Error updating wage:", err);
+        res.status(500).send("Error updating wage");
       } else {
-        res.send(result);
+        res.status(200).send("Wage Updated Successfully");
       }
     }
   );
-  res.set('Access-Control-Allow-Origin', '*');
 });
 
-app.delete("/delete/:id", (req, res) => {
+app.delete("/api/delete/:id", (req, res) => { // Prefixed with /api
   const id = req.params.id;
+
   db.query("DELETE FROM employees WHERE id = ?", id, (err, result) => {
     if (err) {
-      console.log(err);
+      console.error("Error deleting employee:", err);
+      res.status(500).send("Error deleting employee");
     } else {
-      res.send(result);
+      res.status(200).send("Employee Deleted Successfully");
     }
   });
-  res.set('Access-Control-Allow-Origin', '*');
 });
 
 app.listen(3001, () => {
