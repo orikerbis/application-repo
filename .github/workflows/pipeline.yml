@@ -93,6 +93,7 @@ jobs:
         run: |
           cd employee-gitops/environments/dev
           yq e '.server.image.tag = "${{ github.sha }}"' -i values.yaml
+          yq e '.client.image.tag = "${{ github.sha }}"' -i values.yaml
 
       - name: check changes
         run: cat employee-gitops/environments/dev/values.yaml
