@@ -80,7 +80,7 @@ jobs:
               REPOSITORY_NAME: 'orikerbis/employee-gitops'
               ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
               BRANCH: "main"
-              VALUES_FILE_PATH: 'enviroments/dev/values.yaml'
+              VALUES_FILE_PATH: 'environments/dev/values.yaml'
               VALUE_NAME: 'client.image.tag'
               TAG: '${{ github.sha }}' 
   update-image-tag-backend:
@@ -93,6 +93,6 @@ jobs:
               REPOSITORY_NAME: 'orikerbis/employee-gitops'
               ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
               BRANCH: "main"
-              VALUES_FILE_PATH: 'enviroments/dev/values.yaml'
+              VALUES_FILE_PATH: 'environments/dev/values.yaml'
               VALUE_NAME: 'server.image.tag'
               TAG: '${{ github.sha }}'
