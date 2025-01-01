@@ -99,7 +99,7 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          cd gitops-repo
+          cd employee-gitops
           git config user.name "orikerbis"
           git config user.email "orikerbis@gmail.com"  
           git add .
