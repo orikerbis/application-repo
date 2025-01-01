@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - develop
 
 jobs:
 
@@ -70,23 +70,29 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64 --push -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_BACKEND }}:${{ env.IMAGE_TAG }} -f ./server/Dockerfile ./server
     
-
-    #   - name: Clone GitOps repository
-    #     run: |
-    #       git clone https://github.com/your-org/your-gitops-repo.git
-    #       cd your-gitops-repo
-    #       git config user.name "github-actions"
-    #       git config user.email "orikerbis@gmail.com"
-
-    #   - name: Update image tags in GitOps repo
-    #     run: |
-    #       cd your-gitops-repo
-    #       sed -i 's|image: .*/frontend:.*|image: '"{{ env.ECR_REGISTRY }}/{{ env.ECR_REPOSITORY_FRONTEND }}:${{ env.IMAGE_TAG }}"'|g' path/to/your/frontend/deployment.yaml
-    #       sed -i 's|image: .*/backend:.*|image: '"{{ env.ECR_REGISTRY }}/{{ env.ECR_REPOSITORY_BACKEND }}:${{ env.IMAGE_TAG }}"'|g' path/to/your/backend/deployment.yaml
-
-    #   - name: Commit and push changes
-    #     run: |
-    #       cd your-gitops-repo
-    #       git add .
-    #       git commit -m "Update image tags to {{ env.IMAGE_TAG }}"
-    #       git push
+  update-image-tag-frontend:
+        needs: [build-and-push-frontend, build-and-push-backend]
+        runs-on: ubuntu-latest
+        steps:
+          - name: GitOps - Update Image Tag
+            uses: adwert-it/gitops-image-update@v1
+            with:
+              REPOSITORY_NAME: 'orikerbis/employee-gitops'
+              ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+              BRANCH: "main"
+              VALUES_FILE_PATH: 'enviroments/dev/values.yaml'
+              VALUE_NAME: 'client.image.tag'
+              TAG: '${{ github.sha }}' 
+  update-image-tag-backend:
+        needs: [build-and-push-frontend, build-and-push-backend]
+        runs-on: ubuntu-latest
+        steps:
+          - name: GitOps - Update Image Tag
+            uses: adwert-it/gitops-image-update@v1
+            with:
+              REPOSITORY_NAME: 'orikerbis/employee-gitops'
+              ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+              BRANCH: "main"
+              VALUES_FILE_PATH: 'enviroments/dev/values.yaml'
+              VALUE_NAME: 'server.image.tag'
+              TAG: '${{ github.sha }}'
