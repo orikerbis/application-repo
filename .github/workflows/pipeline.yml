@@ -85,13 +85,14 @@ jobs:
       - name: Install yq
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip
-          pip3 install yq
+          sudo apt-get install -y wget
+          wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
 
       - name: Update image tag in values.yaml
         run: |
           cd employee-gitops/environments/dev
-          yq -y '.server.image.tag = "${{ github.sha }}"' -i values.yaml
+          yq e '.server.image.tag = "${{ github.sha }}"' -i values.yaml
 
       - name: check changes
         run: cat employee-gitops/environments/dev/values.yaml
