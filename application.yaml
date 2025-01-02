@@ -6,12 +6,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/orikerbis/application-repo.git'
+    repoURL: "https://github.com/orikerbis/application-repo.git"
     targetRevision: main
-    path: employee-app-chart
+    path: employee-app
   destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: default
+    server: "https://kubernetes.default.svc"
+    namespace: employee-system
   syncPolicy:
     automated:
       prune: true

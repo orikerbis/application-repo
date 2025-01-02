@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}-client
-          image: "825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/frontend:41159f266cce25518e2dbd3292e23fa73cb96ceb"
+          image: "{{ .Values.client.image.repository }}:{{ .Values.client.image.tag }}"
           imagePullPolicy: {{ .Values.client.image.pullPolicy }}
           ports:
             - name: http
