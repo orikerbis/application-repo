@@ -4,7 +4,7 @@ global:
 
 grafana:
   service:
-    name:  my-kube-prometheus-stack-grafana
+    name: prometheus-grafana
     port: 80
 
 client:
