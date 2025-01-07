@@ -1,7 +1,7 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: employee-system-creds
+  name: employee-system-db
   namespace: employee-system  
 spec:
   secretStoreRef:
