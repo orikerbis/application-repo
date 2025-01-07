@@ -8,10 +8,10 @@ spec:
     name: aws-secrets-manager
     kind: ClusterSecretStore
   target:
-    name: employee-system-db
+    name: employee-system-creds
     creationPolicy: Owner
   dataFrom:
   - extract: 
-      key: rds-db-credentials
+      key: dev/db-credentials
         
    
