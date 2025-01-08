@@ -10,7 +10,7 @@ grafana:
 client:
   image:
     repository: 825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/frontend
-    tag: ""
+    tag: "48a33b68790bb6383b0452714ec5f35db8d3dd3b"
   service:
     name: employee-app-frontend
     type: ClusterIP
@@ -20,7 +20,7 @@ client:
 server:
   image:
     repository: 825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/backend
-    tag: ""
+    tag: "48a33b68790bb6383b0452714ec5f35db8d3dd3b"
   service:
     name: employee-app-backend
     type: ClusterIP
