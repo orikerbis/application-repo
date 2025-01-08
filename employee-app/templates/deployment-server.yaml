@@ -23,7 +23,7 @@ spec:
             - name: MYSQL_HOST
               value: employee-db.ctakwaemi1h6.us-east-2.rds.amazonaws.com
             - name: MYSQL_PASSWORD
-              value: "[>Ucq684CtL4Sn(!"          
+              value: Fzt!CF7iOZ3e%S3U          
             - name: MYSQL_USER
               value: admin
           ports:
