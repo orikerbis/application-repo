@@ -19,13 +19,9 @@ spec:
         - name: {{ .Chart.Name }}-server
           image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
-          env:
-            - name: MYSQL_HOST
-              value: employee-db.ctakwaemi1h6.us-east-2.rds.amazonaws.com
-            - name: MYSQL_PASSWORD
-              value: Fzt!CF7iOZ3e%S3U          
-            - name: MYSQL_USER
-              value: admin
+          envFrom:
+            - secretRef:
+                name: employee-system-app-creds
           ports:
             - containerPort: {{ .Values.server.service.port }}
               protocol: TCP
