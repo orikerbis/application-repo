@@ -6,7 +6,6 @@ metadata:
   labels:
     {{- include "employee-app.labels" . | nindent 4 }}
     app: backend
-    
 spec:
   type: {{ .Values.server.service.type }}
   ports:
