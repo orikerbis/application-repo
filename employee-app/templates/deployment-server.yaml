@@ -37,4 +37,4 @@ spec:
           #     path: /
           #     port: {{ .Values.server.service.port }}
           #   initialDelaySeconds: 5
-          #   periodSeconds: 10
+          #  periodSeconds: 10
