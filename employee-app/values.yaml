@@ -10,9 +10,9 @@ grafana:
 client:
   image:
     repository: 825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/frontend
-    tag: ""
+    tag: "1d9844000ce3daa42ceb4d210c1080a043b3432c"
   service:
-    name: employee-app-frontend
+    name: employee-system-employee-app-frontend
     type: ClusterIP
     port: 80
   replicaCount: 1
@@ -20,9 +20,9 @@ client:
 server:
   image:
     repository: 825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/backend
-    tag: ""
+    tag: "1d9844000ce3daa42ceb4d210c1080a043b3432c"
   service:
-    name: employee-app-backend
+    name: employee-system-employee-app-backend
     type: ClusterIP
     port: 3001
   replicaCount: 1

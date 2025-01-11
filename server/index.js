@@ -2,15 +2,6 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql2");
 const cors = require("cors");
-const client = require("prom-client");
-
-const register = new client.Registry();
-const collectDefaultMetrics = client.collectDefaultMetrics;
-
-collectDefaultMetrics({
-    register
-});
-
 
 // Enable CORS for all origins (adjust as needed for production)
 app.use(cors());
@@ -23,7 +14,7 @@ const db = mysql.createPool({
   host: process.env.MYSQL_HOST, // Use environment variables
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
-  database: "employeeDB",
+  database: "employee-db",
 });
 
 // Optional: Test Database Connection

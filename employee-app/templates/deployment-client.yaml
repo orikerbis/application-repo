@@ -4,6 +4,7 @@ metadata:
   name: {{ include "employee-app.fullname" . }}-client
   labels:
     {{- include "employee-app.labels" . | nindent 4 }}
+    app: frontend
   namespace: employee-system
 spec:
   replicas: {{ .Values.client.replicaCount }}

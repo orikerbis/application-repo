@@ -4,6 +4,7 @@ metadata:
   name: {{ include "employee-app.fullname" . }}-server
   labels:
     {{- include "employee-app.labels" . | nindent 4 }}
+    app: backend
   namespace: employee-system
 spec:
   replicas: {{ .Values.server.replicaCount }}
@@ -22,7 +23,7 @@ spec:
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
           envFrom:
             - secretRef:
-                name: employee-system-app-creds
+                name: employee-system-app-creds-sys
           ports:
             - containerPort: {{ .Values.server.service.port }}
               protocol: TCP
