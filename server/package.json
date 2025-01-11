@@ -12,8 +12,6 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mysql2": "^2.3.3",
-    "nodemon": "^2.0.15",
-    "prom-client": "^14.0.1",
-    "body-parser": "^1.19.0"
+    "nodemon": "^2.0.15"
   }
 }
