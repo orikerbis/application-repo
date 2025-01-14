@@ -11,7 +11,7 @@ grafana:
 client:
   image:
     repository: 825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/frontend
-    tag: "c5884ea9978bc8d24290a66bbfb02b2bf81fe3a2"
+    tag: "dcdcc9c7fe83c7f504b5f733b9907933ba4116db"
   service:
     name: "employee-system-employee-app-frontend"
     type: NodePort
@@ -21,7 +21,7 @@ client:
 server:
   image:
     repository: 825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/backend
-    tag: "c5884ea9978bc8d24290a66bbfb02b2bf81fe3a2"
+    tag: "dcdcc9c7fe83c7f504b5f733b9907933ba4116db"
   service:
     name: "employee-system-employee-app-backend"
     type: NodePort
