@@ -2,7 +2,21 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql2");
 const cors = require("cors");
-const client = require("prom-client");
+import metricsPlugin from "fastify-metrics";
+import { register, Counter } from "prom-client";
+
+const fastify = Fastify({ logger: true });
+await fastify.register(metricsPlugin, { endpoint: "/metrics" });
+const requestCounter = new Counter({
+  name: "http_requests_total",
+  help: "Total number of HTTP requests",
+  labelNames: ["method", "route"],
+});
+
+fastify.get("/", async (request, reply) => {
+  requestCounter.labels(request.method, request.routerPath).inc();
+});
+
 
 // Enable CORS for all origins (adjust as needed for production)
 app.use(cors());
@@ -86,10 +100,6 @@ app.delete("/api/delete/:id", (req, res) => { // Prefixed with /api
   });
 });
 
-app.get("/api/metrics", async (req, res) => {
-  res.set('Content-Type', client.register.contentType);
-  res.end(await client.register.metrics());
-});
 
 app.listen(3001, () => {
   console.log("✅ Server running on port: 3001");
