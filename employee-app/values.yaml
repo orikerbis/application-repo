@@ -1,6 +1,7 @@
 global:
   imagePullPolicy: IfNotPresent
   namespace: employee-app
+  secretName: "employee-system-4/dev/db-credentials"
 
 grafana:
   service:
@@ -10,19 +11,19 @@ grafana:
 client:
   image:
     repository: 825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/frontend
-    tag: "84c356e4100f49d3364013b80c04df1371c1ef1a"
+    tag: "1410ec793d3afdf9b93813004640e7ec114954be"
   service:
-    name: employee-system-employee-app-frontend
-    type: ClusterIP
+    name: "employee-system-employee-app-frontend"
+    type: NodePort
     port: 80
   replicaCount: 1
 
 server:
   image:
     repository: 825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/backend
-    tag: "84c356e4100f49d3364013b80c04df1371c1ef1a"
+    tag: "1410ec793d3afdf9b93813004640e7ec114954be"
   service:
-    name: employee-system-employee-app-backend
-    type: ClusterIP
+    name: "employee-system-employee-app-backend"
+    type: NodePort
     port: 3001
   replicaCount: 1

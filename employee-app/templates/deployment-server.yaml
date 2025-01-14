@@ -4,7 +4,6 @@ metadata:
   name: {{ include "employee-app.fullname" . }}-server
   labels:
     {{- include "employee-app.labels" . | nindent 4 }}
-    app: backend
   namespace: employee-system
 spec:
   replicas: {{ .Values.server.replicaCount }}
@@ -15,7 +14,6 @@ spec:
     metadata:
       labels:
         {{- include "employee-app.labels" . | nindent 8 }}
-        app: backend
     spec:
       containers:
         - name: {{ .Chart.Name }}-server
@@ -23,19 +21,15 @@ spec:
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
           envFrom:
             - secretRef:
-                name: employee-system-app-creds-sys
+                name: "db-credentials"
           ports:
             - containerPort: {{ .Values.server.service.port }}
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: {{ .Values.server.service.port }}
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 10
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: {{ .Values.server.service.port }}
-          #   initialDelaySeconds: 5
-          #  periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          

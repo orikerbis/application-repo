@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql2");
 const cors = require("cors");
+const client = require("prom-client");
 
 // Enable CORS for all origins (adjust as needed for production)
 app.use(cors());
@@ -83,6 +84,11 @@ app.delete("/api/delete/:id", (req, res) => { // Prefixed with /api
       res.status(200).send("Employee Deleted Successfully");
     }
   });
+});
+
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', client.register.contentType);
+  res.end(await client.register.metrics());
 });
 
 app.listen(3001, () => {

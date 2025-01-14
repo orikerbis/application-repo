@@ -25,15 +25,10 @@ spec:
             - name: http
               containerPort: {{ .Values.client.service.port }}
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: {{ .Values.client.service.port }}
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 10
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: {{ .Values.client.service.port }}
-          #   initialDelaySeconds: 5
-          #   periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
