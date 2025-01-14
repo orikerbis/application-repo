@@ -86,7 +86,7 @@ app.delete("/api/delete/:id", (req, res) => { // Prefixed with /api
   });
 });
 
-app.get('/metrics', async (req, res) => {
+app.get("/api/metrics", async (req, res) => {
   res.set('Content-Type', client.register.contentType);
   res.end(await client.register.metrics());
 });
