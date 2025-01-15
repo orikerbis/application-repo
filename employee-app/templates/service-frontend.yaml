@@ -3,6 +3,9 @@ kind: Service
 metadata:
   name: {{ include "employee-app.fullname" . }}-frontend
   namespace: employee-system
+  annotations:
+    prometheus.io/port: "metrics"
+    prometheus.io/scrape: "true"
   labels:
     {{- include "employee-app.labels" . | nindent 4 }}
     app: frontend
