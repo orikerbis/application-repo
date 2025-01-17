@@ -1,21 +1,6 @@
 import "./App.css";
 import { useState } from "react";
 import Axios from "axios";
-import app from 'express';
-
-app.get("/metrics", async (req, res) => {
-  try {
-    // Replace 'backend-service' with the actual service name in Kubernetes
-    const response = await axios.get("/api/metrics");
-
-    // Set the appropriate Content-Type for Prometheus metrics
-    res.set("Content-Type", "text/plain; version=0.0.4; charset=utf-8");
-    res.send(response.data);
-  } catch (error) {
-    console.error("Error fetching metrics:", error.message);
-    res.status(500).send("Error fetching metrics");
-  }
-});
 
 function App() {
   const [name, setName] = useState("");

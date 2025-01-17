@@ -36,7 +36,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/metrics", async (req, res) => {
+app.get("api/metrics", async (req, res) => {
   try {
     res.set("Content-Type", promClient.register.contentType);
     res.end(await promClient.register.metrics());

@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
           envFrom:
             - secretRef:
-                name: "db-credentials"
+                name: "db-credentials2"
           ports:
             - containerPort: {{ .Values.server.service.port }}
               protocol: TCP
