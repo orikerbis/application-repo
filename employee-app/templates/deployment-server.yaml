@@ -4,6 +4,7 @@ metadata:
   name: {{ include "employee-app.fullname" . }}-server
   labels:
     {{- include "employee-app.labels" . | nindent 4 }}
+    app: backend
   namespace: employee-system
 spec:
   replicas: {{ .Values.server.replicaCount }}
@@ -14,26 +15,23 @@ spec:
     metadata:
       labels:
         {{- include "employee-app.labels" . | nindent 8 }}
+        app: backend
     spec:
       containers:
         - name: {{ .Chart.Name }}-server
-          image: "825765414083.dkr.ecr.us-east-2.amazonaws.com/dev/backend:41159f266cce25518e2dbd3292e23fa73cb96ceb"
+          image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
           envFrom:
-          - secretRef:
-              name: employee-system-db
+            - secretRef:
+                name: "db-credentials3"
           ports:
             - containerPort: {{ .Values.server.service.port }}
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: {{ .Values.server.service.port }}
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 10
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: {{ .Values.server.service.port }}
-          #   initialDelaySeconds: 5
-          #   periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          
