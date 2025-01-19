@@ -1,7 +1,7 @@
 global:
   imagePullPolicy: IfNotPresent
   namespace: employee-app
-  secretName: "employee-system-5/dev/db-credentials"
+  secretName: "app/dev/db-credentials"
 
 grafana:
   service:
